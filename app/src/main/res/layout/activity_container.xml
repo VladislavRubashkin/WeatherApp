@@ -6,6 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout="@layout/fragment_splash"
-    tools:context=".presentation.ContainerActivity">
+    tools:context=".presentation.screens.ContainerActivity">
 
 </androidx.fragment.app.FragmentContainerView>
