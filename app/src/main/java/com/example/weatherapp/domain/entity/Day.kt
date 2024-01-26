@@ -1,8 +1,9 @@
 package com.example.weatherapp.domain.entity
 
 data class Day(
+    val id: Int,
     val city: String,
-    val time: String,
+    val date: String,
     val condition: String,
     val currentTemp: String,
     val maxTemp: String,
