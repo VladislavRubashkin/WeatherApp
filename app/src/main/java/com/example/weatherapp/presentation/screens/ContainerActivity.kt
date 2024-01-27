@@ -19,9 +19,8 @@ class ContainerActivity : AppCompatActivity() {
     }
 
     private fun launchSplashFragment() {
-        supportFragmentManager
-            .popBackStack()
-
+        // TODO разобраться с помещением и удалением фрагментов в backStack - чтобы из WeekFragment выходить
+        //  из приложения
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.activity_container, SplashFragment.newInstance())

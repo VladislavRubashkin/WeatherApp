@@ -31,21 +31,19 @@ class SplashFragment : Fragment() {
 
         lifecycleScope.launch {
             delay(START_DELAY)
-            launchMainFragment()
+            launchDayFragment()
         }
     }
 
-    private fun launchMainFragment() {
-        requireActivity()
-            .supportFragmentManager
-            .popBackStack()
-
+    private fun launchDayFragment() {
+        // TODO постараться вернуть DayFragment.newInstance()
+        // TODO разобраться с помещением и удалением фрагментов в backStack
         requireActivity()
             .supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.activity_container, MainFragment.newInstance())
-            .addToBackStack(MainFragment.FRAGMENT_NAME)
+            .replace(R.id.activity_container, WeekFragment.newInstance())
+            .addToBackStack(WeekFragment.FRAGMENT_NAME)
             .commit()
     }
 
@@ -55,7 +53,8 @@ class SplashFragment : Fragment() {
     }
 
     companion object {
-        private const val START_DELAY = 3000L
+        // TODO Изменить на 3000L в финальной версии
+        private const val START_DELAY = 1000L
         const val FRAGMENT_NAME = "SplashFragment"
 
         fun newInstance() = SplashFragment()
