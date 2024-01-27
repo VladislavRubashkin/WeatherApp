@@ -5,7 +5,7 @@ import com.example.weatherapp.domain.entity.Day
 
 interface WeatherRepository {
 
-    fun getWeatherDay(dayId: Int): LiveData<Day>
+    fun getWeatherDay(dayId: Int): Day
 
     fun getWeatherWeek(): LiveData<List<Day>>
 
