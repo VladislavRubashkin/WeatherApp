@@ -1,19 +1,14 @@
 package com.example.weatherapp.presentation.screens
 
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.databinding.FragmentDayBinding
 import com.example.weatherapp.presentation.viewmodel.DayViewModel
+import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 
 class DayFragment : Fragment() {
 
@@ -21,8 +16,12 @@ class DayFragment : Fragment() {
     private val binding: FragmentDayBinding
         get() = _binding ?: throw RuntimeException("MainFragment == null")
 
+    private val viewModelFactory by lazy {
+        ViewModelFactory()
+    }
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[DayViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[DayViewModel::class.java]
     }
 
     private var dayId: Int = 0
@@ -44,13 +43,21 @@ class DayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         launchDayFragment()
+        backToWeekFragment()
+    }
+
+    private fun backToWeekFragment() {
+        binding.fabWeek.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     private fun launchDayFragment() {
         viewModel.getWeatherDay(dayId)
         viewModel.weatherDay.observe(viewLifecycleOwner) {
             binding.tvData.text = it.date
-            binding.tvMaxMinTemp.text = it.maxTemp + it.minTemp
+            val maxMinTemp = "${it.maxTemp} / ${it.minTemp}"
+            binding.tvMaxMinTemp.text = maxMinTemp
             binding.tvCity.text = it.city
             binding.tvCondition.text = it.condition
             binding.tvCurrentTemp.text = it.currentTemp
