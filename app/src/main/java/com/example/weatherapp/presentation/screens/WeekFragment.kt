@@ -1,22 +1,30 @@
 package com.example.weatherapp.presentation.screens
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentWeekBinding
 import com.example.weatherapp.presentation.adapters.WeekAdapter
+import com.example.weatherapp.presentation.utils.DialogManager
+import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 import com.example.weatherapp.presentation.viewmodel.WeekViewModel
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 
 class WeekFragment : Fragment() {
 
@@ -24,14 +32,18 @@ class WeekFragment : Fragment() {
     private val binding: FragmentWeekBinding
         get() = _binding ?: throw RuntimeException()
 
+    private val viewModelFactory by lazy {
+        ViewModelFactory()
+    }
+
     private val weekViewModel by lazy {
-        ViewModelProvider(this)[WeekViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[WeekViewModel::class.java]
     }
 
     private lateinit var weekAdapter: WeekAdapter
 
-    private val locationManager by lazy {
-        requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private val fusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     override fun onCreateView(
@@ -44,10 +56,16 @@ class WeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkPermission()
+
         init()
         observe()
         launchDayFragment()
+        getLocation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkLocation()
     }
 
     private fun init() {
@@ -73,17 +91,43 @@ class WeekFragment : Fragment() {
         }
     }
 
-    private fun checkPermission() {
-        val permissionGranted = ActivityCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-        val permissionGranted2 = ActivityCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+    // Запуск диалога по включению GPS, если он выключен
+    private fun checkLocation() {
+        if (isLocationEnabled()) {
+            getLocation()
+        } else {
+            DialogManager.locationSettingsDialog(requireContext(), object : DialogManager.Listener {
+                override fun onClick() {
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+            })
+        }
+    }
 
-        if (permissionGranted && permissionGranted2) {
-            Toast.makeText(requireContext(), "Разрешение получено1", Toast.LENGTH_SHORT).show()
-            requestLocation()
+    // Проверка, включен ли GPS
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val task = fusedLocationProviderClient.getCurrentLocation(
+                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                CancellationTokenSource().token
+            )
+            task.addOnCompleteListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Широта: ${it.result.latitude} Долгота:${it.result.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Log.d("Tag", "Широта: ${it.result.latitude} Долгота:${it.result.longitude}")
+            }
         } else {
             requestPermission()
         }
@@ -92,9 +136,7 @@ class WeekFragment : Fragment() {
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
-            arrayOf(
-                android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
             REQUEST_CODE_PERMISSION
         )
     }
@@ -102,25 +144,19 @@ class WeekFragment : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSION && grantResults.isNotEmpty()) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
                 Toast.makeText(requireContext(), "Разрешение получено2", Toast.LENGTH_SHORT).show()
-                requestLocation()
+
             } else {
                 Toast.makeText(
                     requireContext(),
                     "Не возможно продолжать без данных разрешений",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun requestLocation() {
-        try {
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-        } catch (e: SecurityException) {
-            Log.d("TAG", e.message.toString())
-        }
     }
 
     override fun onDestroyView() {

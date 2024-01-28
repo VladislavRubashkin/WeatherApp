@@ -1,6 +1,6 @@
 package com.example.weatherapp.domain.entity
 
-data class Day(
+data class WeatherDay(
     val id: Int,
     val city: String,
     val date: String,

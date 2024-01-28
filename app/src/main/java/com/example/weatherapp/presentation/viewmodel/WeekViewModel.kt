@@ -1,5 +1,10 @@
 package com.example.weatherapp.presentation.viewmodel
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.repository.WeatherRepositoryImpl
@@ -20,4 +25,6 @@ class WeekViewModel : ViewModel() {
             loadWeatherUseCase()
         }
     }
+
+
 }

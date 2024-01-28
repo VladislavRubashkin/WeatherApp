@@ -3,12 +3,10 @@ package com.example.weatherapp.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ItemDayWeatherBinding
-import com.example.weatherapp.domain.entity.Day
-import com.squareup.picasso.Picasso
+import com.example.weatherapp.domain.entity.WeatherDay
 
-class WeekAdapter: ListAdapter<Day, DayViewHolder>(DayDiffUtilCallback()) {
+class WeekAdapter: ListAdapter<WeatherDay, DayViewHolder>(DayDiffUtilCallback()) {
 
     var dayClickListener: ((Int) -> Unit)? = null
 
