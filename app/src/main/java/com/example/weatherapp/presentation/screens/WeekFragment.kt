@@ -1,12 +1,8 @@
 package com.example.weatherapp.presentation.screens
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,20 +13,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
+import com.example.weatherapp.data.api.ApiFactory
+import com.example.weatherapp.data.repository.WeatherRepositoryImpl
 import com.example.weatherapp.databinding.FragmentWeekBinding
 import com.example.weatherapp.presentation.adapters.WeekAdapter
-import com.example.weatherapp.presentation.utils.DialogManager
+import com.example.weatherapp.presentation.utils.Constants
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 import com.example.weatherapp.presentation.viewmodel.WeekViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WeekFragment : Fragment() {
 
     private var _binding: FragmentWeekBinding? = null
     private val binding: FragmentWeekBinding
-        get() = _binding ?: throw RuntimeException()
+        get() = _binding ?: throw RuntimeException("WeekFragment == null")
 
     private val viewModelFactory by lazy {
         ViewModelFactory()
@@ -53,31 +54,39 @@ class WeekFragment : Fragment() {
         _binding = FragmentWeekBinding.inflate(inflater, container, false)
         return binding.root
     }
-
+//    val scope = CoroutineScope(Dispatchers.Main)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-        observe()
+        initRecyclerView()
         launchDayFragment()
-        getLocation()
+        observe()
+//        getLocation()
+//        scope.launch {
+//            test()
+//        }
     }
+
+//    suspend fun test() {
+//        val modelDto = ApiFactory.apiService.getWeatherInfo(
+//            WeatherRepositoryImpl.API_KEY,
+//            "Moscow",
+//            WeatherRepositoryImpl.DAYS,
+//            WeatherRepositoryImpl.AQI,
+//            WeatherRepositoryImpl.ALERTS
+//        )
+//        binding.tvTest.text = "${modelDto.location.name} ${modelDto.location.localTime}"
+//    }
 
     override fun onResume() {
         super.onResume()
-        checkLocation()
+        weekViewModel.checkLocation(requireContext())
     }
 
-    private fun init() {
+    private fun initRecyclerView() {
         weekAdapter = WeekAdapter()
         binding.rvWeekAdapter.adapter = weekAdapter
         binding.rvWeekAdapter.layoutManager = LinearLayoutManager(activity)
-    }
-
-    private fun observe() {
-        weekViewModel.weekWeather.observe(viewLifecycleOwner) {
-            weekAdapter.submitList(it)
-        }
     }
 
     private fun launchDayFragment() {
@@ -86,34 +95,29 @@ class WeekFragment : Fragment() {
                 .supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.activity_container, DayFragment.newInstance(it))
-                .addToBackStack(DayFragment.FRAGMENT_NAME)
+                .addToBackStack(Constants.DAY_FRAGMENT_NAME)
                 .commit()
         }
     }
 
-    // Запуск диалога по включению GPS, если он выключен
-    private fun checkLocation() {
-        if (isLocationEnabled()) {
-            getLocation()
-        } else {
-            DialogManager.locationSettingsDialog(requireContext(), object : DialogManager.Listener {
-                override fun onClick() {
-                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                }
-            })
+    private fun observe() {
+        weekViewModel.weekWeather.observe(viewLifecycleOwner) {
+            weekAdapter.submitList(it)
+        }
+        weekViewModel.checkLocation(requireContext())
+        weekViewModel.checkGps.observe(viewLifecycleOwner) {
+            if (it) {
+                getLocation()
+            }
         }
     }
 
-    // Проверка, включен ли GPS
-    private fun isLocationEnabled(): Boolean {
-        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-
     private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             val task = fusedLocationProviderClient.getCurrentLocation(
@@ -121,12 +125,9 @@ class WeekFragment : Fragment() {
                 CancellationTokenSource().token
             )
             task.addOnCompleteListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Широта: ${it.result.latitude} Долгота:${it.result.longitude}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // TODO метод принимает широту и долготу и Обращается к серверу(возможно???) ?вынести во viewModel?
                 Log.d("Tag", "Широта: ${it.result.latitude} Долгота:${it.result.longitude}")
+                weekViewModel.requestWeatherData("${it.result.latitude},${it.result.longitude}")
             }
         } else {
             requestPermission()
@@ -137,22 +138,22 @@ class WeekFragment : Fragment() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_CODE_PERMISSION
+            Constants.REQUEST_CODE_PERMISSION
         )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_PERMISSION && grantResults.isNotEmpty()) {
+        if (requestCode == Constants.REQUEST_CODE_PERMISSION && grantResults.isNotEmpty()) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
             ) {
                 Toast.makeText(requireContext(), "Разрешение получено2", Toast.LENGTH_SHORT).show()
-
+                getLocation()
             } else {
                 Toast.makeText(
                     requireContext(),
                     "Не возможно продолжать без данных разрешений",
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_LONG
                 ).show()
             }
         }
@@ -165,8 +166,6 @@ class WeekFragment : Fragment() {
     }
 
     companion object {
-        const val FRAGMENT_NAME = "WeekFragment"
-        private const val REQUEST_CODE_PERMISSION = 100
 
         fun newInstance() = WeekFragment()
     }

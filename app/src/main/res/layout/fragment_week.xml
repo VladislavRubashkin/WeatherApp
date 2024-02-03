@@ -28,4 +28,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_day_weather"/>
 
+    <TextView
+        android:id="@+id/tv_test"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:text="test"
+        android:gravity="center"
+        android:background="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

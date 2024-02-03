@@ -9,5 +9,5 @@ interface WeatherRepository {
 
     fun getWeatherWeek(): LiveData<List<WeatherDay>>
 
-    fun loadWeather()
+    suspend fun loadWeather(city: String)
 }

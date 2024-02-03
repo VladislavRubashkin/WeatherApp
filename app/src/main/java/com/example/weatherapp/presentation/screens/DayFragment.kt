@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.databinding.FragmentDayBinding
+import com.example.weatherapp.presentation.utils.Constants
 import com.example.weatherapp.presentation.viewmodel.DayViewModel
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 
@@ -14,7 +15,7 @@ class DayFragment : Fragment() {
 
     private var _binding: FragmentDayBinding? = null
     private val binding: FragmentDayBinding
-        get() = _binding ?: throw RuntimeException("MainFragment == null")
+        get() = _binding ?: throw RuntimeException("DayFragment == null")
 
     private val viewModelFactory by lazy {
         ViewModelFactory()
@@ -66,10 +67,10 @@ class DayFragment : Fragment() {
 
     private fun parseArgs() {
         val args = requireArguments()
-        if (!args.containsKey(FRAGMENT_ID)) {
+        if (!args.containsKey(Constants.DAY_FRAGMENT_ID)) {
             throw RuntimeException("not found args $args")
         }
-        dayId = args.getInt(FRAGMENT_ID, 0)
+        dayId = args.getInt(Constants.DAY_FRAGMENT_ID, 0)
     }
 
     override fun onDestroyView() {
@@ -78,13 +79,11 @@ class DayFragment : Fragment() {
     }
 
     companion object {
-        const val FRAGMENT_NAME = "DayFragment"
-        private const val FRAGMENT_ID = "dayFragmentId"
 
         fun newInstance(dayId: Int): DayFragment {
             return DayFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, dayId)
+                    putInt(Constants.DAY_FRAGMENT_ID, dayId)
                 }
             }
         }

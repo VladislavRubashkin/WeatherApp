@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityContainerBinding
+import com.example.weatherapp.presentation.utils.Constants
 
 class ContainerActivity : AppCompatActivity() {
 
@@ -24,7 +25,7 @@ class ContainerActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.activity_container, SplashFragment.newInstance())
-            .addToBackStack(SplashFragment.FRAGMENT_NAME)
+//            .addToBackStack(Constants.SPLASH_FRAGMENT_NAME)
             .commit()
     }
 }
