@@ -54,7 +54,7 @@ class WeekFragment : Fragment() {
         _binding = FragmentWeekBinding.inflate(inflater, container, false)
         return binding.root
     }
-
+//    val scope = CoroutineScope(Dispatchers.Main)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,8 +62,21 @@ class WeekFragment : Fragment() {
         launchDayFragment()
         observe()
 //        getLocation()
-
+//        scope.launch {
+//            test()
+//        }
     }
+
+//    suspend fun test() {
+//        val modelDto = ApiFactory.apiService.getWeatherInfo(
+//            WeatherRepositoryImpl.API_KEY,
+//            "Moscow",
+//            WeatherRepositoryImpl.DAYS,
+//            WeatherRepositoryImpl.AQI,
+//            WeatherRepositoryImpl.ALERTS
+//        )
+//        binding.tvTest.text = "${modelDto.location.name} ${modelDto.location.localTime}"
+//    }
 
     override fun onResume() {
         super.onResume()
