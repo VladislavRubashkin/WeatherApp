@@ -6,8 +6,7 @@ import android.widget.EditText
 
 object DialogManager {
     fun locationSettingsDialog(context: Context, listener: Listener) {
-        val builder = AlertDialog.Builder(context)
-        val dialog = builder.create()
+        val dialog = AlertDialog.Builder(context).create()
         dialog.setTitle("Location disabled, do you want location enabled?")
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok") { _, _ ->
             listener.onClick()

@@ -2,6 +2,8 @@ package com.example.weatherapp.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.weatherapp.data.api.ApiFactory
+import com.example.weatherapp.data.api.model.WeatherDataDto
 import com.example.weatherapp.domain.entity.WeatherDay
 import com.example.weatherapp.domain.repository.WeatherRepository
 
@@ -9,6 +11,8 @@ class WeatherRepositoryImpl: WeatherRepository {
 
     private val weatherDayItem = mutableListOf<WeatherDay>()
     private val weatherDayListLiveData = MutableLiveData<List<WeatherDay>>()
+    val weatherDataDto = mutableListOf<WeatherDataDto>()
+
 
     init {
         for (i in 0..20) {
@@ -36,7 +40,21 @@ class WeatherRepositoryImpl: WeatherRepository {
         return weatherDayListLiveData
     }
 
-    override fun loadWeather() {
+    override suspend fun loadWeather(city: String) {
+        val modelDto = ApiFactory.apiService.getWeatherInfo(
+            API_KEY,
+            city,
+            DAYS,
+            AQI,
+            ALERTS
+        )
+        weatherDataDto.add(modelDto)
+    }
 
+    companion object {
+        const val API_KEY = "16d0ba309d834a67aa845031240302"
+        const val DAYS = "3"
+        const val AQI = "no"
+        const val ALERTS = "no"
     }
 }

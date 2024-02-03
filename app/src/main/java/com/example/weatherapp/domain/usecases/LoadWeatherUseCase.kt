@@ -4,5 +4,5 @@ import com.example.weatherapp.domain.repository.WeatherRepository
 
 class LoadWeatherUseCase(private val repository: WeatherRepository) {
 
-    operator fun invoke() = repository.loadWeather()
+    suspend operator fun invoke(city: String) = repository.loadWeather(city)
 }

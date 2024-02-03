@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentSplashBinding
+import com.example.weatherapp.presentation.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,7 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            delay(START_DELAY)
+            delay(Constants.START_DELAY)
             launchDayFragment()
         }
     }
@@ -43,7 +44,7 @@ class SplashFragment : Fragment() {
             .beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.activity_container, WeekFragment.newInstance())
-            .addToBackStack(WeekFragment.FRAGMENT_NAME)
+            .addToBackStack(Constants.WEEK_FRAGMENT_NAME)
             .commit()
     }
 
@@ -53,9 +54,6 @@ class SplashFragment : Fragment() {
     }
 
     companion object {
-        // TODO Изменить на 3000L в финальной версии
-        private const val START_DELAY = 1000L
-        const val FRAGMENT_NAME = "SplashFragment"
 
         fun newInstance() = SplashFragment()
     }
