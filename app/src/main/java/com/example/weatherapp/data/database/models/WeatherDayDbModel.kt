@@ -1,4 +1,4 @@
-package com.example.weatherapp.data.database
+package com.example.weatherapp.data.database.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -31,6 +31,4 @@ data class WeatherDayDbModel (
     @ColumnInfo(name = "imageUrl")
     val imageUrl: String,
 
-    @ColumnInfo(name = "hours")
-    val hours: String
 )

@@ -3,7 +3,6 @@ package com.example.weatherapp.presentation.screens
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
-import com.example.weatherapp.data.api.ApiFactory
-import com.example.weatherapp.data.repository.WeatherRepositoryImpl
 import com.example.weatherapp.databinding.FragmentWeekBinding
 import com.example.weatherapp.presentation.adapters.WeekAdapter
 import com.example.weatherapp.presentation.utils.Constants
@@ -23,9 +20,6 @@ import com.example.weatherapp.presentation.viewmodel.WeekViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class WeekFragment : Fragment() {
 
@@ -34,7 +28,7 @@ class WeekFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("WeekFragment == null")
 
     private val viewModelFactory by lazy {
-        ViewModelFactory()
+        ViewModelFactory(requireActivity().application)
     }
 
     private val weekViewModel by lazy {
@@ -54,7 +48,7 @@ class WeekFragment : Fragment() {
         _binding = FragmentWeekBinding.inflate(inflater, container, false)
         return binding.root
     }
-//    val scope = CoroutineScope(Dispatchers.Main)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,26 +56,14 @@ class WeekFragment : Fragment() {
         launchDayFragment()
         observe()
 //        getLocation()
-//        scope.launch {
-//            test()
-//        }
-    }
-
-//    suspend fun test() {
-//        val modelDto = ApiFactory.apiService.getWeatherInfo(
-//            WeatherRepositoryImpl.API_KEY,
-//            "Moscow",
-//            WeatherRepositoryImpl.DAYS,
-//            WeatherRepositoryImpl.AQI,
-//            WeatherRepositoryImpl.ALERTS
-//        )
-//        binding.tvTest.text = "${modelDto.location.name} ${modelDto.location.localTime}"
-//    }
-
-    override fun onResume() {
-        super.onResume()
         weekViewModel.checkLocation(requireContext())
     }
+
+
+//    override fun onResume() {
+//        super.onResume()
+//        weekViewModel.checkLocation(requireContext())
+//    }
 
     private fun initRecyclerView() {
         weekAdapter = WeekAdapter()
@@ -101,14 +83,14 @@ class WeekFragment : Fragment() {
     }
 
     private fun observe() {
-        weekViewModel.weekWeather.observe(viewLifecycleOwner) {
-            weekAdapter.submitList(it)
-        }
         weekViewModel.checkLocation(requireContext())
         weekViewModel.checkGps.observe(viewLifecycleOwner) {
             if (it) {
                 getLocation()
             }
+        }
+        weekViewModel.weekWeather.observe(viewLifecycleOwner) {
+            weekAdapter.submitList(it)
         }
     }
 
@@ -125,8 +107,6 @@ class WeekFragment : Fragment() {
                 CancellationTokenSource().token
             )
             task.addOnCompleteListener {
-                // TODO метод принимает широту и долготу и Обращается к серверу(возможно???) ?вынести во viewModel?
-                Log.d("Tag", "Широта: ${it.result.latitude} Долгота:${it.result.longitude}")
                 weekViewModel.requestWeatherData("${it.result.latitude},${it.result.longitude}")
             }
         } else {

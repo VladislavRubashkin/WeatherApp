@@ -8,7 +8,7 @@ data class WeatherDataDto(
 
 data class LocationDto(
     val name: String,
-    val localTime: String
+    val localtime: String
 )
 
 data class CurrentDto (
@@ -35,13 +35,13 @@ data class DayDto(
     val maxtemp_c: Float,
     val mintemp_c: Float,
     val condition: ConditionDto,
-    val hour: List<HourDto>
+    val hour: List<HoursDto>
 )
 
-data class HourDto(
+data class HoursDto(
     val time: String,
     val temp_c: Float,
-    val condition: ConditionDto
+//    val condition: ConditionDto
 )
 
 

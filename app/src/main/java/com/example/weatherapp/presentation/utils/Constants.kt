@@ -7,4 +7,9 @@ object Constants {
     const val DAY_FRAGMENT_ID = "dayFragmentId"
     const val WEEK_FRAGMENT_NAME = "WeekFragment"
     const val REQUEST_CODE_PERMISSION = 100
+
+    const val API_KEY = "16d0ba309d834a67aa845031240302"
+    const val DAYS = "3"
+    const val AQI = "no"
+    const val ALERTS = "no"
 }

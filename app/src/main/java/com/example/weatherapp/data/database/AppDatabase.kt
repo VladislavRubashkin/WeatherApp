@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.weatherapp.data.database.models.WeatherDayDbModel
 
 // TODO сделать exportSchema = true и соответствующие изменения
 
-@Database(entities = [WeatherDayDbModel::class], version = 1, exportSchema = false)
+@Database(entities = [WeatherDayDbModel::class], version = 3, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao
