@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.weatherapp.databinding.ItemDayWeatherBinding
 import com.example.weatherapp.domain.entity.WeatherDay
+import com.squareup.picasso.Picasso
 
 class WeekAdapter: ListAdapter<WeatherDay, DayViewHolder>(DayDiffUtilCallback()) {
 
@@ -16,17 +17,16 @@ class WeekAdapter: ListAdapter<WeatherDay, DayViewHolder>(DayDiffUtilCallback())
     }
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int)  {
-        val day = getItem(position)
+        val weatherDay = getItem(position)
         val binding = holder.binding
         with(binding) {
             root.setOnClickListener {
-                dayClickListener?.invoke(day.id)
+                dayClickListener?.invoke(weatherDay.id)
             }
-            tvDate.text = day.date
-            tvTemp.text = day.currentTemp
-            tvCondition.text = day.condition
-            // TODO Возможно загрузка в другом месте
-//            Picasso.get().load("https:" + day.imageUrl).into(ivCondition)
+            tvDate.text = weatherDay.date
+            tvTemp.text = weatherDay.currentTemp
+            tvCondition.text = weatherDay.condition
+            Picasso.get().load("https:" + weatherDay.imageUrl).into(ivCondition)
         }
     }
 }

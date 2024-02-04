@@ -10,6 +10,7 @@ import com.example.weatherapp.databinding.FragmentDayBinding
 import com.example.weatherapp.presentation.utils.Constants
 import com.example.weatherapp.presentation.viewmodel.DayViewModel
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
+import com.squareup.picasso.Picasso
 
 class DayFragment : Fragment() {
 
@@ -18,7 +19,7 @@ class DayFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("DayFragment == null")
 
     private val viewModelFactory by lazy {
-        ViewModelFactory()
+        ViewModelFactory(requireActivity().application)
     }
 
     private val viewModel by lazy {
@@ -54,14 +55,14 @@ class DayFragment : Fragment() {
     }
 
     private fun launchDayFragment() {
-        viewModel.getWeatherDay(dayId)
-        viewModel.weatherDay.observe(viewLifecycleOwner) {
+        viewModel.getWeatherDay(dayId).observe(viewLifecycleOwner) {
             binding.tvData.text = it.date
-            val maxMinTemp = "${it.maxTemp} / ${it.minTemp}"
+            val maxMinTemp = "${it.maxTemp} C / ${it.minTemp} C"
             binding.tvMaxMinTemp.text = maxMinTemp
             binding.tvCity.text = it.city
             binding.tvCondition.text = it.condition
             binding.tvCurrentTemp.text = it.currentTemp
+            Picasso.get().load("https:" + it.imageUrl).into(binding.imWeather)
         }
     }
 
