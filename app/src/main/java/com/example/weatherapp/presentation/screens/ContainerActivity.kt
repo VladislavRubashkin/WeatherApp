@@ -6,6 +6,17 @@ import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityContainerBinding
 import com.example.weatherapp.presentation.utils.Constants
 
+// TODO Dependencies Injection1
+// TODO Custom View с графиком температуры по часам
+// TODO Смена темы и/или шрифта и/или картинки-фона через SharedPreferences1
+//// TODO Перевод на два языка(ГОТОВО)
+// TODO sealed Class State1
+// TODO Тестирование
+// TODO !!!!!!!!!!!!!!!!!!!!!!!!!В БД должны перезаписываться дни, а не добавляться повторы!!!!!!!!!!!!!!!!!!!!!!!!!
+// TODO Кнопка поиска и ре фреш
+// TODO Кнопка поиска - голосовой ввод???
+// TODO Картинки под разные разрешения1
+// TODO Версии зависимостей в Gradle-файле в константы
 class ContainerActivity : AppCompatActivity() {
 
     private val binding: ActivityContainerBinding by lazy {

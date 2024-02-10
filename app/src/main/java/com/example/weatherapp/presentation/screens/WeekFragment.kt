@@ -56,6 +56,7 @@ class WeekFragment : Fragment() {
         launchDayFragment()
         observe()
 //        getLocation()
+
         weekViewModel.checkLocation(requireContext())
     }
 
@@ -127,12 +128,15 @@ class WeekFragment : Fragment() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
             ) {
-                Toast.makeText(requireContext(), "Разрешение получено2", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    requireContext().getString(R.string.permission_granted),
+                    Toast.LENGTH_SHORT
+                ).show()
                 getLocation()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Не возможно продолжать без данных разрешений",
+                    requireContext().getString(R.string.permission_denied),
                     Toast.LENGTH_LONG
                 ).show()
             }
