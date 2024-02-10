@@ -40,5 +40,4 @@ class WeatherRepositoryImpl(
         )
         weatherDao.insertWeatherDay(mapper.mapWeatherDataDtoToListWeatherDayDbModel(modelDto))
     }
-
 }

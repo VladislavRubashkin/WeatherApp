@@ -35,7 +35,7 @@ class WeekViewModel(
             _checkGps.value = true
         } else {
             _checkGps.value = false
-            DialogManager.locationSettingsDialog(context, object : DialogManager.Listener {
+            DialogManager.locationSettingsDialog(context, object : DialogManager.LocationListener {
                 override fun onClick() {
                     _checkGps.value = true
                     startActivity(context, Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), null)

@@ -57,7 +57,7 @@ class DayFragment : Fragment() {
     private fun launchDayFragment() {
         viewModel.getWeatherDay(dayId).observe(viewLifecycleOwner) {
             binding.tvData.text = it.date
-            val maxMinTemp = "${it.maxTemp} C / ${it.minTemp} C"
+            val maxMinTemp = "${it.maxTemp} C° / ${it.minTemp} C°"
             binding.tvMaxMinTemp.text = maxMinTemp
             binding.tvCity.text = it.city
             binding.tvCondition.text = it.condition

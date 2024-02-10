@@ -12,4 +12,5 @@ object Constants {
     const val DAYS = "3"
     const val AQI = "no"
     const val ALERTS = "no"
+    const val CITY = "q"
 }

@@ -1,7 +1,7 @@
 package com.example.weatherapp.data.mapper
 
-import com.example.weatherapp.data.api.model.HoursDto
-import com.example.weatherapp.data.api.model.WeatherDataDto
+import com.example.weatherapp.data.api.models.HoursDto
+import com.example.weatherapp.data.api.models.WeatherDataDto
 import com.example.weatherapp.data.database.models.HoursDbModel
 import com.example.weatherapp.data.database.models.WeatherDayDbModel
 import com.example.weatherapp.domain.entity.WeatherDay
@@ -45,7 +45,7 @@ class Mapper {
         return weatherDayList
     }
 
-    private fun mapHoursDtoToHoursDbModel(hoursDto: HoursDto): HoursDbModel {
+    fun mapHoursDtoToHoursDbModel(hoursDto: HoursDto): HoursDbModel {
         return HoursDbModel(
             id = 0,
             time = hoursDto.time,

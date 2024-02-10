@@ -1,4 +1,4 @@
-package com.example.weatherapp.data.api.model
+package com.example.weatherapp.data.api.models
 
 data class WeatherDataDto(
     val location: LocationDto,
