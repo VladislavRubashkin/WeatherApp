@@ -2,19 +2,12 @@ package com.example.weatherapp.data.api.models
 
 data class WeatherDataDto(
     val location: LocationDto,
-    val current: CurrentDto,
     val forecast: ForecastDto
 )
 
 data class LocationDto(
     val name: String,
     val localtime: String
-)
-
-data class CurrentDto (
-    val last_updated: String,
-    val temp_c: Float,
-    val condition: ConditionDto
 )
 
 data class ConditionDto(
@@ -32,6 +25,7 @@ data class ForecastDayDto(
 )
 
 data class DayDto(
+    val avgtemp_c: Float,
     val maxtemp_c: Float,
     val mintemp_c: Float,
     val condition: ConditionDto,

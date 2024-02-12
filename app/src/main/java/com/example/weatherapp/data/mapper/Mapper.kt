@@ -34,11 +34,10 @@ class Mapper {
                 city = weatherDataDto.location.name,
                 date = weatherDataDto.forecast.forecastday[i].date,
                 condition = weatherDataDto.forecast.forecastday[i].day.condition.text,
-                currentTemp = weatherDataDto.current.temp_c.toString(),
+                currentTemp = weatherDataDto.forecast.forecastday[i].day.avgtemp_c.toString(),
                 maxTemp = weatherDataDto.forecast.forecastday[i].day.maxtemp_c.toString(),
                 minTemp = weatherDataDto.forecast.forecastday[i].day.mintemp_c.toString(),
-                imageUrl = weatherDataDto.current.condition.icon,
-
+                imageUrl = weatherDataDto.forecast.forecastday[i].day.condition.icon
                 )
             weatherDayList.add(weatherDay)
         }
