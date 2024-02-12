@@ -1,18 +1,13 @@
 package com.example.weatherapp.presentation.viewmodel
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.example.weatherapp.data.repository.WeatherRepositoryImpl
+import androidx.lifecycle.ViewModel
 import com.example.weatherapp.domain.usecases.GetWeatherDayUseCase
+import javax.inject.Inject
 
-class DayViewModel(
-    private val application: Application
-    ) : AndroidViewModel(application) {
-
-    private val repo = WeatherRepositoryImpl(application)
-    private val getWeatherDayUseCase = GetWeatherDayUseCase(repo)
+class DayViewModel @Inject constructor(
+    private val getWeatherDayUseCase: GetWeatherDayUseCase
+) : ViewModel() {
 
     fun getWeatherDay(dayId: Int) = getWeatherDayUseCase(dayId)
-
 }

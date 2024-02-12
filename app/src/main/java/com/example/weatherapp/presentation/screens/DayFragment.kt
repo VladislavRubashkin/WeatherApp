@@ -1,5 +1,6 @@
 package com.example.weatherapp.presentation.screens
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.databinding.FragmentDayBinding
+import com.example.weatherapp.presentation.WeatherApplication
 import com.example.weatherapp.presentation.utils.Constants
 import com.example.weatherapp.presentation.viewmodel.DayViewModel
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class DayFragment : Fragment() {
 
@@ -18,15 +21,23 @@ class DayFragment : Fragment() {
     private val binding: FragmentDayBinding
         get() = _binding ?: throw RuntimeException("DayFragment == null")
 
-    private val viewModelFactory by lazy {
-        ViewModelFactory(requireActivity().application)
-    }
+    @Inject
+    lateinit var viewModelFactory : ViewModelFactory
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[DayViewModel::class.java]
     }
 
+    private val component by lazy {
+        (requireActivity().application as WeatherApplication).component
+    }
+
     private var dayId: Int = 0
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

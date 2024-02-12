@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.screens
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentWeekBinding
+import com.example.weatherapp.presentation.WeatherApplication
 import com.example.weatherapp.presentation.adapters.WeekAdapter
 import com.example.weatherapp.presentation.utils.Constants
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
@@ -20,6 +22,7 @@ import com.example.weatherapp.presentation.viewmodel.WeekViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import javax.inject.Inject
 
 class WeekFragment : Fragment() {
 
@@ -27,18 +30,26 @@ class WeekFragment : Fragment() {
     private val binding: FragmentWeekBinding
         get() = _binding ?: throw RuntimeException("WeekFragment == null")
 
-    private val viewModelFactory by lazy {
-        ViewModelFactory(requireActivity().application)
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private val weekViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[WeekViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (requireActivity().application as WeatherApplication).component
     }
 
     private lateinit var weekAdapter: WeekAdapter
 
     private val fusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
