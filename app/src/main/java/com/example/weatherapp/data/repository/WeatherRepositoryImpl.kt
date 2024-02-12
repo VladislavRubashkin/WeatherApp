@@ -1,22 +1,21 @@
 package com.example.weatherapp.data.repository
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.example.weatherapp.data.api.ApiFactory
-import com.example.weatherapp.data.database.AppDatabase
+import com.example.weatherapp.data.api.ApiService
+import com.example.weatherapp.data.database.WeatherDao
 import com.example.weatherapp.data.mapper.Mapper
 import com.example.weatherapp.domain.entity.WeatherDay
 import com.example.weatherapp.domain.repository.WeatherRepository
 import com.example.weatherapp.presentation.utils.Constants
+import javax.inject.Inject
 
-class WeatherRepositoryImpl(
-    private val application: Application
-    ): WeatherRepository {
+class WeatherRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val weatherDao: WeatherDao,
+    private val mapper: Mapper
+) : WeatherRepository {
 
-    private val apiFactory = ApiFactory.apiService
-    private val weatherDao = AppDatabase.getInstance(application).weatherDao()
-    private val mapper = Mapper()
 
     override fun getWeatherDay(dayId: Int): LiveData<WeatherDay> = MediatorLiveData<WeatherDay>().apply {
         addSource(weatherDao.getWeatherDay(dayId)) {
@@ -31,7 +30,7 @@ class WeatherRepositoryImpl(
     }
 
     override suspend fun loadWeather(city: String) {
-        val modelDto = apiFactory.getWeatherInfo(
+        val modelDto = apiService.getWeatherInfo(
             Constants.API_KEY,
             city,
             Constants.DAYS,

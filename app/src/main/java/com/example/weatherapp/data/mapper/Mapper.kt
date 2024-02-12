@@ -5,8 +5,9 @@ import com.example.weatherapp.data.api.models.WeatherDataDto
 import com.example.weatherapp.data.database.models.HoursDbModel
 import com.example.weatherapp.data.database.models.WeatherDayDbModel
 import com.example.weatherapp.domain.entity.WeatherDay
+import javax.inject.Inject
 
-class Mapper {
+class Mapper @Inject constructor() {
 
     fun mapDayDbModelToEntity(weatherDayDbModel: WeatherDayDbModel): WeatherDay {
         return WeatherDay(
