@@ -28,7 +28,7 @@ class WeekFragment : Fragment() {
 
     private var _binding: FragmentWeekBinding? = null
     private val binding: FragmentWeekBinding
-        get() = _binding ?: throw RuntimeException("WeekFragment == null")
+        get() = _binding ?: throw RuntimeException("WeekFragment binding == null")
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
