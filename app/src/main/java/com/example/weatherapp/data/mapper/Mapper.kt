@@ -31,7 +31,7 @@ class Mapper @Inject constructor() {
         val weatherDayList = mutableListOf<WeatherDayDbModel>()
         for (i in 0 until 3) {
             val weatherDay = WeatherDayDbModel(
-                id = 0,
+                id = i,
                 city = weatherDataDto.location.name,
                 date = weatherDataDto.forecast.forecastday[i].date,
                 condition = weatherDataDto.forecast.forecastday[i].day.condition.text,

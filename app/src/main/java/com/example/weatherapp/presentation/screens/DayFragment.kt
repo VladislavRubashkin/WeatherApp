@@ -19,7 +19,7 @@ class DayFragment : Fragment() {
 
     private var _binding: FragmentDayBinding? = null
     private val binding: FragmentDayBinding
-        get() = _binding ?: throw RuntimeException("DayFragment == null")
+        get() = _binding ?: throw RuntimeException("DayFragment binding == null")
 
     @Inject
     lateinit var viewModelFactory : ViewModelFactory

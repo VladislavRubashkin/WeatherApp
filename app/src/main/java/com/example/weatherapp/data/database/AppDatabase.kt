@@ -8,8 +8,8 @@ import com.example.weatherapp.data.database.models.WeatherDayDbModel
 
 // TODO сделать exportSchema = true и соответствующие изменения
 
-@Database(entities = [WeatherDayDbModel::class], version = 3, exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
+@Database(entities = [WeatherDayDbModel::class], version = 4, exportSchema = true)
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao
 
@@ -31,7 +31,8 @@ abstract class AppDatabase: RoomDatabase() {
                     application,
                     AppDatabase::class.java,
                     DB_NAME
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = dataBase
                 return dataBase
             }
