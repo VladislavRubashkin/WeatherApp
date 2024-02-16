@@ -19,7 +19,6 @@ interface ApplicationComponent {
 
     fun inject(weekFragment: WeekFragment)
 
-
     @Component.Factory
     interface Factory {
 

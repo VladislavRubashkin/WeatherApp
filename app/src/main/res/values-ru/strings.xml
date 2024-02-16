@@ -10,4 +10,10 @@
     <string name="location_dialog_title">Определение местоположения отключено. Хотите включить GPS?</string>
     <string name="search_city_dialog_title">Название города:</string>
     <string name="back">Назад</string>
+    <string name="city">Город</string>
+    <string name="night">Ночь</string>
+    <string name="morning">Утро</string>
+    <string name="day">День</string>
+    <string name="evening">Вечер</string>
+
 </resources>

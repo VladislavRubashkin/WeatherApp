@@ -17,6 +17,7 @@ import com.example.weatherapp.databinding.FragmentWeekBinding
 import com.example.weatherapp.presentation.WeatherApplication
 import com.example.weatherapp.presentation.adapters.WeekAdapter
 import com.example.weatherapp.presentation.utils.Constants
+import com.example.weatherapp.presentation.utils.DialogManager
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 import com.example.weatherapp.presentation.viewmodel.WeekViewModel
 import com.google.android.gms.location.LocationServices
@@ -66,16 +67,26 @@ class WeekFragment : Fragment() {
         initRecyclerView()
         launchDayFragment()
         observe()
-//        getLocation()
-
+        inputCity()
         weekViewModel.checkLocation(requireContext())
     }
 
-
-//    override fun onResume() {
-//        super.onResume()
-//        weekViewModel.checkLocation(requireContext())
-//    }
+    //Работает, НО не правильно, не сохраняет состояние!!!!!!!!!!!!
+    private fun inputCity() {
+        binding.fabCity.setOnClickListener {
+            DialogManager.searchByCity(requireContext(), object : DialogManager.SearchListener {
+                override fun onClick(city: String) {
+                   weekViewModel.requestWeatherData(city)
+//                    requireActivity()
+//                        .supportFragmentManager
+//                        .beginTransaction()
+//                        .detach(this@WeekFragment)
+//                        .attach(this@WeekFragment)
+//                        .commit()
+                }
+            })
+        }
+    }
 
     private fun initRecyclerView() {
         weekAdapter = WeekAdapter()
