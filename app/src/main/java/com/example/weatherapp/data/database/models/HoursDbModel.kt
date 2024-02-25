@@ -15,4 +15,10 @@ data class HoursDbModel(
 
     @ColumnInfo("temp")
     val temp: Float,
+
+    @ColumnInfo(name = "conditionDescription")
+    val conditionDescription: String,
+
+    @ColumnInfo(name = "conditionIcon")
+    val conditionIcon: String
 )

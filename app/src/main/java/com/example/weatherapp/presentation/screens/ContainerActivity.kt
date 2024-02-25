@@ -16,6 +16,7 @@ import com.example.weatherapp.databinding.ActivityContainerBinding
 // TODO Кнопка поиска - голосовой ввод???
 // TODO Картинки под разные разрешения
 // TODO Версии зависимостей в Gradle-файле в константы
+// TODO Несколько макетов в RecyclerView(дни недели над плашками погоды)
 class ContainerActivity : AppCompatActivity() {
 
     private val binding: ActivityContainerBinding by lazy {

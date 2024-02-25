@@ -32,11 +32,11 @@ class SplashFragment : Fragment() {
 
         lifecycleScope.launch {
             delay(Constants.START_DELAY)
-            launchDayFragment()
+            launchDayWeekFragment()
         }
     }
 
-    private fun launchDayFragment() {
+    private fun launchDayWeekFragment() {
         // TODO постараться вернуть DayFragment.newInstance()
         // TODO разобраться с помещением и удалением фрагментов в backStack
         requireActivity()

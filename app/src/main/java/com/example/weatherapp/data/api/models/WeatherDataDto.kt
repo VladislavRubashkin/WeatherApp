@@ -35,7 +35,7 @@ data class DayDto(
 data class HoursDto(
     val time: String,
     val temp_c: Float,
-//    val condition: ConditionDto
+    val condition: ConditionDto
 )
 
 
