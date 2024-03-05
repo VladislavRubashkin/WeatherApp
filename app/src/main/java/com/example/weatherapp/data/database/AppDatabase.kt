@@ -8,7 +8,7 @@ import com.example.weatherapp.data.database.models.WeatherDayDbModel
 
 // TODO сделать exportSchema = true и соответствующие изменения
 
-@Database(entities = [WeatherDayDbModel::class], version = 5, exportSchema = true)
+@Database(entities = [WeatherDayDbModel::class], version = 6, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun weatherDao(): WeatherDao

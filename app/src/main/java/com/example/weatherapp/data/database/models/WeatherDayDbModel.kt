@@ -3,10 +3,7 @@ package com.example.weatherapp.data.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.weatherapp.data.database.HoursConverter
 
-@TypeConverters(HoursConverter::class)
 @Entity(tableName = "weather_day_items")
 data class WeatherDayDbModel (
 
@@ -32,9 +29,5 @@ data class WeatherDayDbModel (
     val minTemp: String,
 
     @ColumnInfo(name = "imageUrl")
-    val imageUrl: String,
-
-    @ColumnInfo(name = "hours")
-    val hours: List<HoursDbModel>
-
+    val imageUrl: String
 )

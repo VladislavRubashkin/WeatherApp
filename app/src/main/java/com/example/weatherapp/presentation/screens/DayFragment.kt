@@ -74,32 +74,8 @@ class DayFragment : Fragment() {
             binding.tvCity.text = it.city
             binding.tvCondition.text = it.condition
             binding.tvCurrentTemp.text = it.currentTemp
-//            temperatureByHour(it)
             Picasso.get().load("https:" + it.imageUrl).into(binding.imWeather)
         }
-    }
-
-    private fun temperatureByHour(weatherDay: WeatherDay) {
-        var averageTempNight = 0.0f
-        var averageTempMorning = 0.0f
-        var averageTempDay = 0.0f
-        var averageTempEvening = 0.0f
-        for (i in 0 until weatherDay.hours.size) {
-            when(i) {
-                in 0..5 -> averageTempNight += weatherDay.hours[i].temp
-                in 6..11 -> averageTempMorning += weatherDay.hours[i].temp
-                in 12..17 -> averageTempDay += weatherDay.hours[i].temp
-                in 18..23 -> averageTempEvening += weatherDay.hours[i].temp
-            }
-        }
-        averageTempNight /= 6
-        averageTempMorning /= 6
-        averageTempDay /= 6
-        averageTempEvening /= 6
-        binding.tvTempNight.text = averageTempNight.toString()
-        binding.tvTempMorning.text = averageTempMorning.toString()
-        binding.tvTempDay.text = averageTempDay.toString()
-        binding.tvTempEvening.text = averageTempEvening.toString()
     }
 
     private fun parseArgs() {

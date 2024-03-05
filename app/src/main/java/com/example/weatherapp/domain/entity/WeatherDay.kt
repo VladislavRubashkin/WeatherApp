@@ -8,6 +8,5 @@ data class WeatherDay(
     val currentTemp: String,
     val maxTemp: String,
     val minTemp: String,
-    val imageUrl: String,
-    val hours: List<HoursWeatherDay>
+    val imageUrl: String
 )

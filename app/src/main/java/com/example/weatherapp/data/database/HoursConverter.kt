@@ -25,7 +25,7 @@ class HoursConverter {
         strHours.split(";").forEach {
             val strList = it.split(",")
             val hoursDbModel = HoursDbModel(
-                id = strList[0].toInt(),
+                id = strList[0].let { this.toString().toInt() },
                 time = strList[1],
                 temp = strList[2].toFloat(),
                 conditionDescription = strList[3],
