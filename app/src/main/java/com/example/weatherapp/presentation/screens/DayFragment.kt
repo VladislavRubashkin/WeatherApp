@@ -22,7 +22,7 @@ class DayFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("DayFragment binding == null")
 
     @Inject
-    lateinit var viewModelFactory : ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[DayViewModel::class.java]

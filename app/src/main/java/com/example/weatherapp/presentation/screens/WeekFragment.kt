@@ -17,7 +17,6 @@ import com.example.weatherapp.databinding.FragmentWeekBinding
 import com.example.weatherapp.presentation.WeatherApplication
 import com.example.weatherapp.presentation.adapters.WeekAdapter
 import com.example.weatherapp.presentation.utils.Constants
-import com.example.weatherapp.presentation.utils.DialogManager
 import com.example.weatherapp.presentation.viewmodel.ViewModelFactory
 import com.example.weatherapp.presentation.viewmodel.WeekViewModel
 import com.google.android.gms.location.LocationServices
@@ -66,26 +65,7 @@ class WeekFragment : Fragment() {
 
         initRecyclerView()
         launchDayFragment()
-        observe()
-        inputCity()
-        weekViewModel.checkLocation(requireContext())
-    }
-
-    //Работает, НО не правильно, не сохраняет состояние!!!!!!!!!!!!
-    private fun inputCity() {
-        binding.fabCity.setOnClickListener {
-            DialogManager.searchByCity(requireContext(), object : DialogManager.SearchListener {
-                override fun onClick(city: String) {
-                   weekViewModel.requestWeatherData(city)
-//                    requireActivity()
-//                        .supportFragmentManager
-//                        .beginTransaction()
-//                        .detach(this@WeekFragment)
-//                        .attach(this@WeekFragment)
-//                        .commit()
-                }
-            })
-        }
+        observe(savedInstanceState)
     }
 
     private fun initRecyclerView() {
@@ -105,11 +85,13 @@ class WeekFragment : Fragment() {
         }
     }
 
-    private fun observe() {
+    private fun observe(savedInstanceState: Bundle?) {
         weekViewModel.checkLocation(requireContext())
-        weekViewModel.checkGps.observe(viewLifecycleOwner) {
-            if (it) {
-                getLocation()
+        if (savedInstanceState == null) {
+            weekViewModel.checkGps.observe(viewLifecycleOwner) {
+                if (it) {
+                    getLocation()
+                }
             }
         }
         weekViewModel.weekWeather.observe(viewLifecycleOwner) {
@@ -150,7 +132,8 @@ class WeekFragment : Fragment() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED
             ) {
-                Toast.makeText(requireContext(),
+                Toast.makeText(
+                    requireContext(),
                     requireContext().getString(R.string.permission_granted),
                     Toast.LENGTH_SHORT
                 ).show()

@@ -29,6 +29,5 @@ data class WeatherDayDbModel (
     val minTemp: String,
 
     @ColumnInfo(name = "imageUrl")
-    val imageUrl: String,
-
+    val imageUrl: String
 )

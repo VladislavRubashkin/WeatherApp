@@ -1,8 +1,6 @@
 package com.example.weatherapp.data.mapper
 
-import com.example.weatherapp.data.api.models.HoursDto
 import com.example.weatherapp.data.api.models.WeatherDataDto
-import com.example.weatherapp.data.database.models.HoursDbModel
 import com.example.weatherapp.data.database.models.WeatherDayDbModel
 import com.example.weatherapp.domain.entity.WeatherDay
 import javax.inject.Inject
@@ -18,8 +16,7 @@ class Mapper @Inject constructor() {
             currentTemp = weatherDayDbModel.currentTemp,
             maxTemp = weatherDayDbModel.maxTemp,
             minTemp = weatherDayDbModel.minTemp,
-            imageUrl = weatherDayDbModel.imageUrl,
-            hours = ""
+            imageUrl = weatherDayDbModel.imageUrl
         )
     }
 
@@ -39,17 +36,9 @@ class Mapper @Inject constructor() {
                 maxTemp = weatherDataDto.forecast.forecastday[i].day.maxtemp_c.toString(),
                 minTemp = weatherDataDto.forecast.forecastday[i].day.mintemp_c.toString(),
                 imageUrl = weatherDataDto.forecast.forecastday[i].day.condition.icon
-                )
+            )
             weatherDayList.add(weatherDay)
         }
         return weatherDayList
-    }
-
-    fun mapHoursDtoToHoursDbModel(hoursDto: HoursDto): HoursDbModel {
-        return HoursDbModel(
-            id = 0,
-            time = hoursDto.time,
-            temp = hoursDto.temp_c
-        )
     }
 }
