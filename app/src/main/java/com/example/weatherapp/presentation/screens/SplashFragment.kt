@@ -37,8 +37,6 @@ class SplashFragment : Fragment() {
     }
 
     private fun launchDayWeekFragment() {
-        // TODO постараться вернуть DayFragment.newInstance()
-        // TODO разобраться с помещением и удалением фрагментов в backStack
         requireActivity()
             .supportFragmentManager
             .beginTransaction()

@@ -41,32 +41,4 @@ class Mapper @Inject constructor() {
         }
         return weatherDayList
     }
-
-//    private fun mapHoursDtoToHoursDbModel(hoursDto: HoursDto): HoursDbModel {
-//        return HoursDbModel(
-//            id = 0,
-//            time = hoursDto.time,
-//            temp = hoursDto.temp_c,
-//            conditionDescription = hoursDto.condition.text,
-//            conditionIcon = hoursDto.condition.icon
-//        )
-//    }
-//
-//    private fun mapListHoursDtoToListHoursDbModel(hours: List<HoursDto>) = hours.map {
-//        mapHoursDtoToHoursDbModel(it)
-//    }
-
-//    private fun mapHoursDbModelToHoursEntity(hours: HoursDbModel): HoursWeatherDay {
-//        return HoursWeatherDay(
-//            id = hours.id,
-//            time = hours.time,
-//            temp = hours.temp,
-//            conditionDescription = hours.conditionDescription,
-//            conditionIcon = hours.conditionIcon
-//        )
-//    }
-//
-//    private fun mapListHoursDbModelToListHoursEntity(hours: List<HoursDbModel>) = hours.map {
-//        mapHoursDbModelToHoursEntity(it)
-//    }
 }

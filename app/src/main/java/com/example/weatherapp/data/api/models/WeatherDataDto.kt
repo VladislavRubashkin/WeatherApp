@@ -29,14 +29,8 @@ data class DayDto(
     val maxtemp_c: Float,
     val mintemp_c: Float,
     val condition: ConditionDto,
-    val hour: List<HoursDto>
 )
 
-data class HoursDto(
-    val time: String,
-    val temp_c: Float,
-    val condition: ConditionDto
-)
 
 
 
