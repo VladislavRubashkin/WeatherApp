@@ -2,7 +2,7 @@ package com.example.weatherapp.domain.utils
 
 import com.example.weatherapp.domain.entity.WeatherDay
 
-object GetData {
+object TestData {
 
     fun getActualWeatherDay(): WeatherDay = WeatherDay(
         id = 1,

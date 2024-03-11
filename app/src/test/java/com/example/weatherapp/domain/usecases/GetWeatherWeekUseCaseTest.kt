@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weatherapp.domain.entity.WeatherDay
 import com.example.weatherapp.domain.repository.WeatherRepository
-import com.example.weatherapp.domain.utils.GetData
+import com.example.weatherapp.domain.utils.TestData
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -19,14 +19,14 @@ class GetWeatherWeekUseCaseTest {
     private val weatherRepositoryTest = mock<WeatherRepository>()
 
     private val actualListWeatherWeek = mutableListOf(
-        GetData.getActualWeatherDay()
+        TestData.getActualWeatherDay()
     )
     private val _actualWeatherWeekLiveData = MutableLiveData<List<WeatherDay>>()
     private val actualWeatherWeekLiveData: LiveData<List<WeatherDay>>
         get() = _actualWeatherWeekLiveData
 
     private val expectedListWeatherWeek = mutableListOf(
-        GetData.getExpectedWeatherDay()
+        TestData.getExpectedWeatherDay()
     )
     private val _expectedWeatherWeekLiveData = MutableLiveData<List<WeatherDay>>()
     private val expectedWeatherWeekLiveData: LiveData<List<WeatherDay>>

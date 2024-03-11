@@ -65,7 +65,12 @@ class WeekFragment : Fragment() {
 
         initRecyclerView()
         launchDayFragment()
-        observe(savedInstanceState)
+//        observe()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observe()
     }
 
     private fun initRecyclerView() {
@@ -85,13 +90,11 @@ class WeekFragment : Fragment() {
         }
     }
 
-    private fun observe(savedInstanceState: Bundle?) {
+    private fun observe() {
         weekViewModel.checkLocation(requireContext())
-        if (savedInstanceState == null) {
-            weekViewModel.checkGps.observe(viewLifecycleOwner) {
-                if (it) {
-                    getLocation()
-                }
+        weekViewModel.checkGps.observe(viewLifecycleOwner) {
+            if (it) {
+                getLocation()
             }
         }
         weekViewModel.weekWeather.observe(viewLifecycleOwner) {
