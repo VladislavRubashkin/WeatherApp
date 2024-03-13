@@ -6,8 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.weatherapp.data.database.models.WeatherDayDbModel
 
-// TODO сделать exportSchema = true и соответствующие изменения
-
 @Database(entities = [WeatherDayDbModel::class], version = 6, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
 
