@@ -33,7 +33,7 @@ class GetWeatherDayUseCaseTest {
 
 
     /**
-     * Проверяем не исказились ли данные из WeatherRepository, проходя через GetWeatherDayUseCase.
+     * Проверяем не исказились ли данные  из WeatherRepository, проходя через GetWeatherDayUseCase.
      */
 
     @Test
