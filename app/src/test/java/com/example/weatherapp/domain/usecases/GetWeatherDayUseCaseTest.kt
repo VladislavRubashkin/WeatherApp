@@ -6,11 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weatherapp.domain.entity.WeatherDay
 import com.example.weatherapp.domain.repository.WeatherRepository
-import com.example.weatherapp.domain.utils.TestData
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import com.example.weatherapp.TestData
+import org.junit.jupiter.api.AfterEach
+
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 
@@ -52,7 +53,7 @@ class GetWeatherDayUseCaseTest {
         Mockito.verify(weatherRepositoryTest, Mockito.times(1)).getWeatherDay(testDayId)
     }
 
-    @Before
+    @BeforeEach
     fun before() {
         ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
             override fun executeOnDiskIO(runnable: Runnable) {
@@ -69,7 +70,7 @@ class GetWeatherDayUseCaseTest {
         })
     }
 
-    @After
+    @AfterEach
     fun after() {
         Mockito.reset(weatherRepositoryTest)
         ArchTaskExecutor.getInstance().setDelegate(null)
