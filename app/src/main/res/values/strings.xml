@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">It is not possible to continue without these permissions</string>
+    <string name="search">Search</string>
+    <string name="update">Update</string>
+    <string name="back">Back</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="location_dialog_title">Location detection is disabled. Do you want to turn on GPS?</string>
+    <string name="search_city_dialog_title">City name:</string>
+    <string name="city">city</string>
+    <string name="night">Night</string>
+    <string name="morning">Morning</string>
+    <string name="day">Day</string>
+    <string name="evening">Evening</string>
 </resources>
