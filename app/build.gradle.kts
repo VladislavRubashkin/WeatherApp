@@ -26,11 +26,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
     }
 }
 
@@ -80,4 +89,19 @@ dependencies {
 
     // Coroutines test
     testImplementation (libs.kotlinx.coroutines.test)
+
+    // Play services
+    implementation (libs.play.services.location)
+
+    // Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.retrofit2.kotlin.coroutines.adapter)
+
+    // Picasso
+    implementation (libs.picasso)
+
+    // Okhttp
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
 }
